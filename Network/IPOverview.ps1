@@ -1,6 +1,6 @@
 # The purpose of this script is to collect standard IP data #
 
-$ipAddr = Get-NetIPAddress
+$ipAddr = Get-NetIPAddress -AddressFamily IPv4
 
 Write-Host -ForegroundColor Black "[*] All current IP Addresses: "
 Write-Host -ForegroundColor Black "----------------------------- "
