@@ -99,13 +99,14 @@ function main()
     {
         $absPath = $userFileSystemRoot+'\'+$userDirectories[$i]
     
-        Write-Progress -Activity "[*] Backing up user files..." -CurrentOperation -Completed -Status "$i% Complete" -PercentComplete $i
+        Write-Progress -Activity "[*] Backing up user files..." -Status "$i% Complete" -PercentComplete $i
 
         Write-Host -ForegroundColor Blue "[*] Backing up: `t`t", $absPath, "`t`t ==>> `t`t", $backupDirectory
 
         Copy-Item -Path $absPath -Destination $backupDirectory -Recurse
+
     }
-    Write-Host -ForegroundColor "[*] Backup Complete [*]"
+    Write-Host -ForegroundColor Green "[*] Backup Complete [*]"
 }
 
 main
