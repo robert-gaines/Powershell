@@ -3,7 +3,7 @@
 $ErrorActionPreference = "SilentlyContinue"
 function GenerateHashes()
 {
-    $hashArray = New-Object System.Collections.ArrayList
+    Write-Host -ForegroundColor Yellow "[*] Hashing file system contents..."
 
     $timeStamp = Get-Date -Format o | Foreach-Object{ $_ -replace ":",'.' } 
 
@@ -11,12 +11,14 @@ function GenerateHashes()
 
     $filePath = [System.String]::Concat($currentPath,$fileName) 
 
-    Get-ChildItem -Path "C:\Users\rgaines\Desktop" -Recurse -Force | Get-FileHash | Export-CSV $filePath
+    Get-ChildItem -Path "C:\" -Recurse -Force | Get-FileHash | Export-CSV $filePath
 
     return
 }
 function CompareHashes()
 {
+    Write-Host -ForegroundColor Yellow "[*] Hash file comparison function invoked [*]"
+
     $timeStamp = Get-Date -Format o | Foreach-Object{ $_ -replace ":",'.' }
 
     $currentPath = Get-Location 
@@ -25,7 +27,7 @@ function CompareHashes()
 
     $filePath = [System.String]::Concat($currentPath,$fileName)
 
-    Write-Host "[*] Listing computed hash files..."
+    Write-Host -ForegroundColor Yellow "[*] Listing computed hash files..."
 
     Start-Sleep -Seconds 1 
 
@@ -33,7 +35,7 @@ function CompareHashes()
 
     $baseLineFile = Read-Host "[+] Enter the baseline file name "
 
-    $comparisonFile = Read-Host "[+] Enter the complete file name "
+    $comparisonFile = Read-Host "[+] Enter the name of the file to be compared "
 
     Write-Host -ForegroundColor Yellow "[*] Checking baseline and current hash record..."
 
@@ -47,15 +49,36 @@ function CompareHashes()
     {
         Write-Host -ForegroundColor Red "[!] Anomalies detected [!]"
 
+        Start-Sleep -Seconds 1
+
+        Write-Host -ForegroundColor Red "[*] Listing modified entries..."
+
         Get-Content $filePath
     }
 }
 
 function main()
 {
-    #GenerateHashes
+    Write-Host -ForegroundColor Blue "
 
-    CompareHashes
+[*] File System Integrity Checker [*]
+-------------------------------------
+Options:
+-------
+1) Generate Hashes
+2) Compare Against Baseline
+3) Exit
+
+    "
+    $option = Read-Host "[+] Selection-> "
+
+    Switch($option)
+    {
+        1{GenerateHashes}
+        2{CompareHashes}
+        3{exit}
+        default{exit}
+    }
 }
 
 main
