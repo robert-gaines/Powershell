@@ -1,6 +1,5 @@
-# Add existing local user to Administrator Group #
+# Change local account password #
 
-$ErrorActionPreference = "SilentlyContinue"
 function AdminTest()
 {
     $test = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
@@ -16,37 +15,40 @@ function AdminTest()
         exit
     }
 }
+
 function main()
 {
     AdminTest
 
-    Write-Host -ForegroundColor Yellow "[*] Add Local Administrator [*]`n"
+    Write-Host -ForegroundColor Yellow "[*] Local Account - Password Modification [*]`n"
 
     Write-Host -ForegroundColor Yellow "[*] Gathering local user accounts...`n"
 
     Start-Sleep -Seconds 1
 
-    $accounts = Get-LocalUser | Select-Object -Property Name
+    $accounts = Get-LocalUser | Select-Object -Property Name,Enabled
 
     $accounts | Foreach-Object { Write-Host -ForegroundColor Green $_.Name }
     
     Write-Host ""
 
-    $subjectAccount = Read-Host "[+] Enter the account to be promoted to a local Administrator-> "
+    $subjectAccount = Read-Host "[+] Enter the subject account name-> "
 
-    Write-Host "[*] Attempting to add the local account to the Administrators group..."
+    $newPassword = Read-Host -AsSecureString "[+] Enter the new password-> "
+
+    Write-Host "[*] Attempting to change the local user account password..."
 
     Start-Sleep -Seconds 1
 
     try 
     {
-       Add-LocalGroupMember -Group Administrators -Member $subjectAccount
+       Set-LocalUser -Name $subjectAccount -Password $newPassword
        
-       Write-Host -ForegroundColor Green "[*] User added to Administrators Group [*]"
+       Write-Host -ForegroundColor Green "[*] Local Account Password Changed [*]"
     }
     catch 
     {
-        Write-Host -ForegroundColor Red "[!] Failed to add user to Administrators Group [!]"
+        Write-Host -ForegroundColor Red "[!] Failed to change password [!]"
     }
 }
 
