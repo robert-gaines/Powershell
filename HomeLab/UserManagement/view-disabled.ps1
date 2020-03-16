@@ -1,0 +1,1 @@
+﻿Get-ADUser -Filter * | Where-Object Enabled -ne True | Out-Gridview
