@@ -1,0 +1,1 @@
+Get-AZSubscription | Format-List

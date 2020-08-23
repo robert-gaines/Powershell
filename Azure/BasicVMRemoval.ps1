@@ -1,0 +1,1 @@
+Remove-AZVM -Name 'Test-VM' -ResourceGroupName 'LinuxVM'
