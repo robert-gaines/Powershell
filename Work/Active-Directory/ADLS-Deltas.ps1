@@ -10,12 +10,12 @@ $ad_machines | Foreach-Object { $ad_computers += $_.Name }
 
 $ls_objects | Foreach-Object {
 
-                                    Write-Host -ForegroundColor Yellow "Checking: $_ " ; Start-Sleep -Seconds 1
+                                    Write-Host -ForegroundColor Yellow "Checking: $_ " #; Start-Sleep -Seconds 1
                                 
                                     if($ad_computers -NotContains $_)
                                     {
                                         $obj = $_
-                                        Write-Host -ForegroundColor Red "[!] Object not found in AD-> $obj"; Start-Sleep -Seconds 1
+                                        Write-Host -ForegroundColor Red "[!] Object not found in AD-> $obj"#; Start-Sleep -Seconds 1
                                         "Object not found: $obj " | Out-File "ad_deltas.txt" -Append
                                     }
                                 
