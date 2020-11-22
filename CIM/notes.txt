@@ -1,0 +1,12 @@
+CIM
+---
+
+Common Information Model
+
+Modern replacement for WIM
+
+CIM employees WSMan
+
+CIM Does not support alternate credentials
+
+
