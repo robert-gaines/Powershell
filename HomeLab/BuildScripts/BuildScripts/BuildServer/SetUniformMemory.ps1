@@ -1,0 +1,1 @@
+﻿Get-VM * | Foreach-Object { Set-VMMemory $_.Name -StartupBytes 1024MB -DynamicMemoryEnabled:$false}
