@@ -2,13 +2,19 @@
 
 function DecryptString()
 {
-    $ciphertext_test = Test-Path -Path 'ciphertext.txt'
+    #$currentDirectory = (Get-Location).Path
+
+    #$subjectPath = $currentDirectory+'\ciphertext.txt'
+
+    $subjectPath = "C:\Users\robert.gaines\Desktop\Main\Powershell\Homelab\Geo-Notify\ciphertext.txt"
+
+    $ciphertext_test = Test-Path -Path $subjectPath
 
     if($ciphertext_test)
     {
         try
         {
-            $secure_string = Get-Content -Path "ciphertext.txt" | ConvertTo-SecureString
+            $secure_string = Get-Content -Path $subjectPath | ConvertTo-SecureString
 
             $temp = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure_string)
 
@@ -90,7 +96,8 @@ function main()
             [pscredential]$credentials = New-Object System.Management.Automation.PSCredential ($username, $password)
 
 $body = "
-New Login: $computerName `
+Device:    $computerName `
+Event:     Device Powered On `
 Date/Time: $dateTime `
 IP:        $ip `
 City:      $city `
@@ -102,7 +109,7 @@ Longitude: $long "
 
             Send-MailMessage -To "15093199075@tmomail.net" `
                              -From "robert.winston.gaines@outlook.com" `
-                             -Subject "Login: $computerName " `
+                             -Subject "Notification: $computerName " `
                              -Body $body `
                              -UseSsl:$true `
                              -SmtpServer "smtp-mail.outlook.com" `
