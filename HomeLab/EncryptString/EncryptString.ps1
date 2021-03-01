@@ -1,4 +1,9 @@
-﻿
+﻿<#
+   Storing plaintext credentials at rest is generally a bad idea.
+   This script converts a string value to an encrypted string stored
+   in a text file
+ #>
+
 $plaintext = Read-Host "[+] Enter the plaintext string-> " 
 
 try
